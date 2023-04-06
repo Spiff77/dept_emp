@@ -1,7 +1,9 @@
 package com.mycompany.app;
 
-import com.mycompany.app.dao.DepartmentDao;
-import com.mycompany.app.dao.EmployeeDao;
+import com.mycompany.app.dao.*;
+import com.mycompany.app.factory.DaoType;
+import com.mycompany.app.factory.DepartmentDaoFactory;
+import com.mycompany.app.factory.EmployeeDaoFactory;
 import com.mycompany.app.model.Department;
 import com.mycompany.app.model.Employee;
 
@@ -10,8 +12,11 @@ import java.util.Date;
 public class MyEntry {
     public static void main(String[] args) {
 
-        EmployeeDao edao = new EmployeeDao();
-        DepartmentDao ddao = new DepartmentDao();
+        EmployeeDaoFactory.setType(DaoType.MOCK);
+        DepartmentDaoFactory.setType(DaoType.MOCK);
+
+        EmployeeDao edao = EmployeeDaoFactory.getDao();
+        DepartmentDao ddao = DepartmentDaoFactory.getDao();
 
         System.out.println("---------------- EMPLOYEE ----------------");
         System.out.println("Inserting emp:");
@@ -36,9 +41,15 @@ public class MyEntry {
         department.setName("MAXINCLEANING");
         ddao.update(department);
         System.out.println("now updating, new value from db: " + department);
-        System.out.println("Deleting nom");
+        System.out.println("Deleting department");
         ddao.delete(1234);
         System.out.println("Checking if we gor null from db: " + ddao.findOne(1234));
 
     }
 }
+
+// Deux classes: DepartmentJdbc et DepartmentMock qui implementent l'interface...
+// ... DepartmentDao. Cette interface contient les methodes classiques de DAO (findAll, insert, etc...)
+// Nous avons besoin d'une factory afin de dire si nous utilisons les fausses classes (Mock) ou les classes JDBC...
+// Nous allons donc créer DepartmentFactory ainsi qu'une énumeration des options si pas deja disponible
+
