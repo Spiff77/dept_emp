@@ -7,13 +7,15 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DepartmentJdbcDao implements DepartmentDao {
+public class DepartmentJdbcDao implements DepartmentDao  {
 
-    public Department findOne(int id){
+    public Department findOne(Integer id){
         Connection conn = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
         Department department = null;
+
+
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             conn = DriverManager.getConnection("jdbc:mysql://localhost:9999/scott?user=root");
@@ -32,6 +34,7 @@ public class DepartmentJdbcDao implements DepartmentDao {
             ex.printStackTrace();
         }
         return department;
+
     }
 
     public List<Department> findAll(){
@@ -96,7 +99,7 @@ public class DepartmentJdbcDao implements DepartmentDao {
             ex.printStackTrace();
         }
     }
-    public void delete(int id){
+    public void deleteById(Integer id){
         Connection conn = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;

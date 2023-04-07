@@ -21,4 +21,8 @@ public class EmployeeDaoFactory {
     public static void setType(DaoType type) {
         EmployeeDaoFactory.type = type;
     }
+
+    public static DaoType getType() {
+        return type;
+    }
 }

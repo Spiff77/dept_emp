@@ -2,6 +2,7 @@ package com.mycompany.app.dao;
 
 
 import com.mycompany.app.model.Employee;
+import com.mycompany.app.utils.ConnectionManagement;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -9,14 +10,15 @@ import java.util.List;
 
 public class EmployeeJdbcDao implements  EmployeeDao{
 
-    public Employee findOne(int id){
+    @Override
+    public Employee findOne(Integer id){
         Connection conn = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
         Employee employee = null;
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:9999/scott?user=root");
+
+            conn = ConnectionManagement.getInstance().getConnection();
             stmt = conn.prepareStatement("SELECT * FROM emp where empno = ?");
             stmt.setInt(1, id);
             rs = stmt.executeQuery();
@@ -39,6 +41,7 @@ public class EmployeeJdbcDao implements  EmployeeDao{
         return employee;
     }
 
+    @Override
     public List<Employee> findAll(){
         Connection conn = null;
         Statement stmt = null;
@@ -46,10 +49,8 @@ public class EmployeeJdbcDao implements  EmployeeDao{
         List<Employee> employees = new ArrayList<>();
 
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:9999/scott?user=root");
-            stmt = conn.createStatement();
+          conn = ConnectionManagement.getInstance().getConnection();
+          stmt = conn.createStatement();
 
             rs = stmt.executeQuery("SELECT * FROM emp");
             while(rs.next())
@@ -69,14 +70,14 @@ public class EmployeeJdbcDao implements  EmployeeDao{
         return employees;
     }
 
+    @Override
     public void update(Employee employee){
         Connection conn = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
 
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:9999/scott?user=root");
+            conn = ConnectionManagement.getInstance().getConnection();
             stmt = conn.prepareStatement("UPDATE emp SET " +
                     "ename = ?, " +
                     "job = ?, " +
@@ -100,14 +101,15 @@ public class EmployeeJdbcDao implements  EmployeeDao{
             ex.printStackTrace();
         }
     }
+
+    @Override
     public void delete(Employee employee){
         Connection conn = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
 
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:9999/scott?user=root");
+            conn = ConnectionManagement.getInstance().getConnection();
             stmt = conn.prepareStatement("DELETE FROM emp where empno = ?");
             stmt.setInt(1, employee.getId());
             stmt.executeUpdate();
@@ -116,14 +118,15 @@ public class EmployeeJdbcDao implements  EmployeeDao{
             ex.printStackTrace();
         }
     }
-    public void delete(int id){
+
+    @Override
+    public void deleteById(Integer id){
         Connection conn = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
 
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:9999/scott?user=root");
+            conn = ConnectionManagement.getInstance().getConnection();
             stmt = conn.prepareStatement("DELETE FROM emp where empno = ?");
             stmt.setInt(1, id);
             stmt.executeUpdate();
@@ -132,6 +135,8 @@ public class EmployeeJdbcDao implements  EmployeeDao{
             ex.printStackTrace();
         }
     }
+
+    @Override
     public void insert(Employee newEmp){
 
         Connection conn = null;
@@ -139,8 +144,7 @@ public class EmployeeJdbcDao implements  EmployeeDao{
         ResultSet rs = null;
 
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:9999/scott?user=root");
+            conn = ConnectionManagement.getInstance().getConnection();
             stmt = conn.prepareStatement("INSERT INTO emp VALUES (?,?,?,?,?,?,?,?)");
             stmt.setInt(1, newEmp.getId());
             stmt.setString(2, newEmp.getName());
@@ -157,4 +161,14 @@ public class EmployeeJdbcDao implements  EmployeeDao{
         }
     }
 
+    @Override
+    public List<Employee> getAllWithSalaryStartingFrom(int amount) {
+        Connection conn = null;
+        Statement stmt = null;
+        ResultSet rs = null;
+        List<Employee> employees = new ArrayList<>();
+
+// TODO
+        return employees;
+    }
 }

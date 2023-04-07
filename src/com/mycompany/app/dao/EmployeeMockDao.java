@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class EmployeeMockDao implements  EmployeeDao{
 
@@ -17,7 +18,7 @@ public class EmployeeMockDao implements  EmployeeDao{
             new Employee(1236, "Pierre", "IT", 7369, new Date(), 2030, 300, 30)
     ));
 
-    public Employee findOne(int id){
+    public Employee findOne(Integer id){
         return this.employeesFakeDb.stream().filter(e -> e.getId() == id).findFirst().orElse(null);
     }
 
@@ -33,12 +34,22 @@ public class EmployeeMockDao implements  EmployeeDao{
 
 
     }
-    public void delete(int id){
+    public void deleteById(Integer id){
         employeesFakeDb.remove(findOne(id));
     }
+
+    @Override
+    public void delete(Employee employee) {
+        this.employeesFakeDb.remove(employee);
+    }
+
     public void insert(Employee newEmp){
         employeesFakeDb.add(newEmp);
     }
 
 
+    @Override
+    public List<Employee> getAllWithSalaryStartingFrom(int amount) {
+        return this.employeesFakeDb.stream().filter( e -> e.getSalary() > amount).collect(Collectors.toList());
+    }
 }

@@ -6,6 +6,7 @@ import com.mycompany.app.factory.DepartmentDaoFactory;
 import com.mycompany.app.factory.EmployeeDaoFactory;
 import com.mycompany.app.model.Department;
 import com.mycompany.app.model.Employee;
+import com.mycompany.app.utils.ConnectionManagement;
 
 import java.util.Date;
 
@@ -28,7 +29,7 @@ public class MyEntry {
         edao.update(employee);
         System.out.println("now updating, new value from db: " + employee);
         System.out.println("Deleting nom");
-        edao.delete(1234);
+        edao.deleteById(1234);
         System.out.println("Checking if we gor null from db: " + edao.findOne(1234));
 
 
@@ -42,9 +43,11 @@ public class MyEntry {
         ddao.update(department);
         System.out.println("now updating, new value from db: " + department);
         System.out.println("Deleting department");
-        ddao.delete(1234);
+        ddao.deleteById(1234);
         System.out.println("Checking if we gor null from db: " + ddao.findOne(1234));
 
+        if(EmployeeDaoFactory.getType() == DaoType.JDBC)
+            ConnectionManagement.getInstance().closeConnection();
     }
 }
 

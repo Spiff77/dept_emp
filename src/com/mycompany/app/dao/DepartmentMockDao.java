@@ -15,7 +15,7 @@ public class DepartmentMockDao implements  DepartmentDao{
             new Department(229, "GESTION", "CREUSE")
     ));
 
-    public Department findOne(int id){
+    public Department findOne(Integer id){
         return this.departmentsFakeDb.stream().filter(e -> e.getId() == id).findFirst().orElse(null);
     }
 
@@ -31,9 +31,15 @@ public class DepartmentMockDao implements  DepartmentDao{
 
 
     }
-    public void delete(int id){
+    public void deleteById(Integer id){
          departmentsFakeDb.remove(findOne(id));
     }
+
+    @Override
+    public void delete(Department department) {
+        this.departmentsFakeDb.remove(department);
+    }
+
     public void insert(Department newEmp){
         departmentsFakeDb.add(newEmp);
     }
