@@ -21,7 +21,8 @@ public class MyEntry {
 
         System.out.println("---------------- EMPLOYEE ----------------");
         System.out.println("Inserting emp:");
-        edao.insert(new Employee(1234, "Jean", "IT", 7369, new Date(), 2030, 300, 30));
+        Employee employee1 = new Employee(1234, "Jean", "IT", 7369, new Date(), 2030,20, 300, 30);
+        edao.insert(employee1);
         Employee employee = edao.findOne(1234);
         System.out.println("Now selecting, found:" + employee);
         employee = edao.findOne(1234);
